@@ -18,4 +18,44 @@ import static com.jayway.restassured.RestAssured.given;
 public class UserTestSteps {
 
 
+    @Given("^create new user with firstName \"(.+)\", lastName \"(.+)\", userName \"(.+)\"$")
+    public void givenTest(String firstName, String lastName, String username) throws JsonProcessingException {
+
+//        JSONObject requestBody = new JSONObject();
+//        requestBody.put("username", username);
+//        requestBody.put("firstName", firstName);
+//        requestBody.put("lastName", lastName);
+
+        UserRequestBody userRequestBody = new UserRequestBody();
+        userRequestBody.setFirstName(firstName);
+        userRequestBody.setLastName(lastName);
+        userRequestBody.setUsername(username);
+
+        String requestBody = new ObjectMapper().writeValueAsString(userRequestBody);
+
+
+        RestAssured.given().log().all()
+                .header("Content-Type", "application/json")
+                .header("accept","application/json")
+                .body(requestBody)
+                .post("https://petstore.swagger.io/v2/user")
+                .then().statusCode(200);
+
+    }
+
+    @When("^a client deletes a user with \"(.+)\" from the system$")
+    public void aClientDeletesAUserWithFromTheSystem(String username) {
+        RestAssured.given().header("Content-Type", "application/json")
+                .delete("https://petstore.swagger.io/v2/user/" + username)
+                .then().statusCode(200);
+    }
+
+
+    @Then("^verify that user with \"(.+)\" has been deleted$")
+    public void verifyThatUserWithHasBeenDeleted(String username) {
+        RestAssured.given()
+                .get("https://petstore.swagger.io/v2/user/" + username)
+                .then().statusCode(404);
+
+    }
 }
