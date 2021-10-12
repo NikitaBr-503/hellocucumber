@@ -48,6 +48,9 @@ public class UserTestSteps {
         RestAssured.given().header("Content-Type", "application/json")
                 .delete("https://petstore.swagger.io/v2/user/" + username)
                 .then().statusCode(200);
+
+
+
     }
 
 
