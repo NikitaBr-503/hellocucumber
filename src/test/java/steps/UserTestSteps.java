@@ -40,6 +40,25 @@ public class UserTestSteps {
                 .body(requestBody)
                 .post("https://petstore.swagger.io/v2/user")
                 .then().statusCode(200);
-
     }
+
+
+    @When("^a client deletes a user with \"(.+)\" from the system$")
+    public void aClientDeletesAUserWithFromTheSystem(String username) {
+        RestAssured.given().log().all()
+                .header("Content-Type", "application/json")
+                .delete("https://petstore.swagger.io/v2/user/" + username)
+                .then().statusCode(200);
+    }
+
+
+    @Then("^verify that user with \"(.+)\" has been deleted$")
+    public void verifyThatUserWithHasBeenDeleted(String username) {
+        RestAssured.given().log().all()
+                .header("Content-Type", "application/json")
+                .get("https://petstore.swagger.io/v2/user/" + username)
+                .then().statusCode(404);
+    }
+
+
 }

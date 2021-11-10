@@ -5,7 +5,8 @@ Feature: User API tests
     Given create new user with firstName "<firstName>", lastName "lastName", userName "<userName>"
     When a client deletes a user with "<userName>" from the system
     Then verify that user with "<userName>" has been deleted
+
     Examples:
-      | firstName | userName    |
-      | Nikita    | djksfhksdfj |
-      | James     | sdhjfgjhdsg |
+      | firstName | userName     |
+      | Nikita    | qwqwqwqwqw12 |
+      | James     | cmvbcmv      |
